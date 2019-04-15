@@ -1,1 +1,34 @@
-Test
+<html>
+    <head>
+        <title>
+            W02: task２
+        </title>
+    </head>
+    <body>
+            <script>
+                    function AreaOfTriangle(){
+                        var area="Cannot form a triangle.<br>"
+                        var sides=new Array();
+                        sides[0] = 1;
+                        sides[1] = 2;
+                        sides[2] = 3;
+                        if((sides[0]+sides[1]<=sides[2]) || (sides[0]+sides[2]<=sides[1] )|| (sides[1]+sides[2]<=sides[0])) 
+                {
+                    return area; 
+                }     
+                        document.write(sides[0]+"<br>");
+                        document.write(sides[1]+"<br>");
+                        document.write(sides[2]+"<br>");
+                        
+                        //s=sqr(p*(p-a)(p-b)(p-c));
+                        var p=(sides[0]+sides[1]+sides[2])/2;
+                        area=Math.sqrt(p*(p-sides[0])*(p-sides[1])*(p-sides[2]));
+                        return area;
+                    }
+                </script>
+                <script>
+                var S=AreaOfTriangle();
+                document.write(S);
+                </script>
+    </body>
+</html>

@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <title>
+            W02: task２
+        </title>
+    </head>
+    <body>
+        <script>
+            class Vec3 {
+                constructor(x, y, z) {
+                    this.x = x;
+                    this.y = y;
+                    this.z = z;
+                }
+            }
+        </script>
+        <script>
+            function AreaOfTriangle(v0,v1,v2){
+                var area="Cannot form a triangle.<br>"
+                var sides=new Array();
+                sides[0] = Math.sqrt(Math.pow(v0.x - v1.x,2)+Math.pow(v0.y - v1.y,2) + Math.pow(v0.z - v1.z,2)); 
+	            sides[1] = Math.sqrt(Math.pow(v0.x - v2.x,2)+Math.pow(v0.y - v2.y,2) + Math.pow(v0.z - v2.z,2));
+                sides[2] = Math.sqrt(Math.pow(v2.x - v1.x,2)+Math.pow(v2.y - v1.y,2) + Math.pow(v2.z - v1.z,2));
+                
+                if((sides[0]+sides[1]<=sides[2]) || (sides[0]+sides[2]<=sides[1] )|| (sides[1]+sides[2]<=sides[0])) 
+                {
+                    document.coordinates.s.value=area;
+                    return area; 
+                }   
+
+                //s=sqr(p*(p-a)(p-b)(p-c));
+                var p=(sides[0]+sides[1]+sides[2])/2;
+                area=Math.sqrt(p*(p-sides[0])*(p-sides[1])*(p-sides[2]));
+                document.coordinates.s.value=area;
+                return area;
+            }
+        </script>
+        <form name="coordinates">
+            Please input the coordinates of the three vertices:<br>
+            v0:x<input name="x0" type="number">
+            y<input name="y0" type="number">
+            z<input name="z0" type="number"><br>
+            v1:x<input name="x1" type="number">
+            y<input name="y1" type="number">
+            z<input name="z1" type="number"><br>
+            v2:x<input name="x2" type="number">
+            y<input name="y2" type="number">
+            z<input name="z2" type="number"><br>
+            <input type="button" onclick="GetInput()" value="submit"><br>
+            S:<input name="s" type="text"><br>
+        </form>
+        <script>
+            function GetInput(){
+                var x0=Number(document.coordinates.x0.value);
+                var y0=Number(document.coordinates.y0.value);
+                var z0=Number(document.coordinates.z0.value);
+                var x1=Number(document.coordinates.x1.value);
+                var y1=Number(document.coordinates.y1.value);
+                var z1=Number(document.coordinates.z1.value);
+                var x2=Number(document.coordinates.x2.value);
+                var y2=Number(document.coordinates.y2.value);
+                var z2=Number(document.coordinates.z2.value);
+                var v0=new Vec3(x0,y0,z0);
+                var v1=new Vec3(x1,y1,z1);
+                var v2=new Vec3(x2,y2,z2);
+                var S=(AreaOfTriangle(v0,v1,v2));
+            }
+            
+        </script>
+    </body>
+</html>
