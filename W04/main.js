@@ -18,17 +18,13 @@ function main()
     document.body.appendChild( renderer.domElement );
 
     var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    var material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+    var material = new THREE.MeshBasicMaterial( { color: 0xf11fff } );
     var cube = new THREE.Mesh( geometry, material );
     scene.add( cube );
 
-    var light = new THREE.PointLight( 0xffffff );
+    var light = new THREE.PointLight( 0xffff22 );
     light.position.set( 1, 1, 1 );
     scene.add( light );
-
-    var material = new THREE.MeshLambertMaterial({
-        color: 0xffffff
-    });
 
     loop();
 
