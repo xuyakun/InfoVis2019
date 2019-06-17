@@ -1,34 +1,30 @@
 <html>
     <head>
-        <title>
-            W02: task２
-        </title>
+    <title>Final Task</title>
+    <link rel="stylesheet" href="style.css">
     </head>
-    <body>
-            <script>
-                    function AreaOfTriangle(){
-                        var area="Cannot form a triangle.<br>"
-                        var sides=new Array();
-                        sides[0] = 1;
-                        sides[1] = 2;
-                        sides[2] = 3;
-                        if((sides[0]+sides[1]<=sides[2]) || (sides[0]+sides[2]<=sides[1] )|| (sides[1]+sides[2]<=sides[0])) 
-                {
-                    return area; 
-                }     
-                        document.write(sides[0]+"<br>");
-                        document.write(sides[1]+"<br>");
-                        document.write(sides[2]+"<br>");
-                        
-                        //s=sqr(p*(p-a)(p-b)(p-c));
-                        var p=(sides[0]+sides[1]+sides[2])/2;
-                        area=Math.sqrt(p*(p-sides[0])*(p-sides[1])*(p-sides[2]));
-                        return area;
-                    }
-                </script>
-                <script>
-                var S=AreaOfTriangle();
-                document.write(S);
-                </script>
+    <body style="margin:0">
+    <div id="entirety">
+      <!-- visualization -->
+      
+        <!-- Color -->
+        <div id="div_changeColor">
+          <label id="lb_color" style="font-family:Arial;font-size:14px;">Color</label><br>
+          <label style="font-family:Arial;font-size:14px;">R：</label>
+          <input id="color_R" type="range" min="0" max="255" step="1" value="150"/>
+          <span id="color_R_val"></span><br>
+          <label style="font-family:Arial;font-size:14px;">G：</label>
+          <input id="color_G" type="range" min="0" max="255" step="1" value="80"/>
+          <span id="color_G_val"></span><br>
+          <label style="font-family:Arial;font-size:14px;">B：</label>
+          <input id="color_B" type="range" min="0" max="255" step="1" value="100"/>
+          <span id="color_B_val"></span><br>
+        </div>
+        
+    </div>
+	<script>
+	    main();
+	</script>
     </body>
 </html>
+

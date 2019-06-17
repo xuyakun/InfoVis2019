@@ -1,0 +1,215 @@
+<html>
+    <head>
+    <title>Final Task</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+    <body style="margin:0">
+    <div id="entirety">
+      <!-- visualization -->
+      <div id="display">
+      </div>
+      <div id="text">
+          <p align="center">氏名：徐亜坤　　学籍番号：191X026X</p>
+          <p><b>Overview:</b></p>
+          <p>The page is divided into three parts according to
+               Description(30%):Rendering screen(50%):UI(20%). The Rendering 
+            screen is used to show the result of visualization and the UI is 
+        used to change the visualization parameters.</p>
+        <p><b>Introduction:</b></p>
+       <p>From this UI, the following functions can be implemented:</p>
+       <p>1.Change isovalue.<br>We can change isovalue from 0 to 255.</p>
+       <p>2.Change color.<br>We can change color of lobster by changing the value of 
+        R,G,B from 0 to 255.</p>
+        <p>3.Shader.<br>We can implement shaders based on different reflection models to 
+            change the meterial of lobster by four buttons. 1.Normal: Change the 
+            meterial to MeshLambertMaterial; 2.Lambertian: Implement Gouraud shading based on 
+            Lambertian reflection; 3.Phong: Implement Gouraud shading based on 
+            Phong reflection; 4.BlinnPhong: Implement Phong shading based on Blinn-Phong reflection.
+        </p>
+        <p>4.Reset.<br>We can reset parameters to initial value.<br> 
+        Initial value: <br>Isovalue: 128<br>Color: R: 150; G: 80; B: 100. 
+    <br>Meterial of lobster: MeshLambertMaterial</p>
+            
+
+        </div>
+      <!-- Functions -->
+      <div id="controller">
+        <!-- isovalue -->
+        <div id="div_isovalue">
+          <label id="lb_isovalue" style="font-family:Arial;font-size:14px;">Isovalue</label><br>
+          <input id="isovalue_change" type="range" min="0" max="255" step="1" value="128"/>
+          <span id="isovalue_val"></span>
+        </div>
+        <!-- Color -->
+        <div id="div_changeColor">
+          <label id="lb_color" style="font-family:Arial;font-size:14px;">Color</label><br>
+          <label style="font-family:Arial;font-size:14px;">R：</label>
+          <input id="color_R" type="range" min="0" max="255" step="1" value="150"/>
+          <span id="color_R_val"></span><br>
+          <label style="font-family:Arial;font-size:14px;">G：</label>
+          <input id="color_G" type="range" min="0" max="255" step="1" value="80"/>
+          <span id="color_G_val"></span><br>
+          <label style="font-family:Arial;font-size:14px;">B：</label>
+          <input id="color_B" type="range" min="0" max="255" step="1" value="100"/>
+          <span id="color_B_val"></span><br>
+        </div>
+        <!-- changeMeterial -->
+        <div id="div_shader">
+          <label id="lb_shader" style="font-family:Arial;font-size:14px;">Shader</label><br>
+          <input id="Normal_Btn" type="button" value="Normal"/>
+          <input id="Lambertian_Btn" type="button" value="Lambertian"/>
+          <input id="Phong_Btn" type="button" value="Phong"/>
+          <input id="BlinnPhong_Btn" type="button" value="BlinnPhong"/>
+        </div>
+
+        <!-- Reset Button -->
+        <div id="div_ResetBtn">
+          <input id="Reset_Btn" type="button" value="Reset"/>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="jquery.js"></script>
+	<script src="three.min.js"></script>
+	<script src="TrackballControls.js"></script>
+	<script src="https://threejs.org/examples/js/math/Lut.js"></script>
+	<script src="https://naohisas.github.io/KVS.js/Build/KVS.min.js"></script>
+	<script src="https://naohisas.github.io/KVS.js/Build/KVS2THREE.min.js"></script>
+	<script src="https://naohisas.github.io/KVS.js/Source/KVSLobsterData.js"></script>
+	<script src="Bounds.js"></script>
+	<script src="Isosurfaces_final.js"></script>
+	<script src="main.js"></script>
+	<script type="x-shader/x-vertex" id="lambertian.vert">
+	    varying vec3 point_color;
+	    varying vec4 point_position;
+	    varying vec3 normal_vector;
+	    uniform vec3 light_position;
+	    uniform vec3 m_color;
+	  
+	    vec3 LambertianReflection(vec3 C,vec3 L,vec3 N)
+	    {
+	        float ka = 0.4;
+	        float kd = 0.6;
+	        float dd = max( dot(N,L),0.0);
+	        float Ia = ka;
+	        float Id = kd*dd;
+	        return C*(Ia+Id);
+	    }
+	  
+	    void main()
+	    {
+	        point_position = modelViewMatrix * vec4(position, 1.0);
+	        normal_vector = normalMatrix * normal;
+	  
+	        vec3 C = m_color;
+	        vec3 L = normalize( light_position - point_position.xyz);
+	        vec3 N = normalize( normal_vector);
+	        point_color = LambertianReflection(C,L,N);
+	        gl_Position = projectionMatrix * point_position;
+	    }
+	</script>
+	
+	<script type="x-shader/x-fragment" id="lambertian.frag">
+	    varying vec3 point_color;
+	
+	    void main(){
+	        gl_FragColor = vec4(point_color,1.0);
+        }
+	</script>
+	<script type="x-shader/x-vertex" id="gouraud.vert">
+	    varying vec3 point_color;
+	    varying vec4 point_position;
+	    varying vec3 normal_vector;
+	    uniform vec3 light_position;
+        uniform vec3 camera_position;
+        uniform vec3 m_color;
+	
+	    vec3 PhongReflection(vec3 C,vec3 L,vec3 N, vec3 V)
+	    {
+	        float ka = 0.3;
+	        float kd = 0.5;
+	        float ks = 0.8;
+	        float n = 50.0;
+	        vec3 R = reflect( -L, N);
+	        float dd = max( dot(N, L), 0.0);
+	        float ds = pow( max( dot(R, V), 0.0), n);
+	        if (dd <= 0.0){	 ds = 0.0;}
+	        float Ia = ka;
+	        float Id = kd*dd;
+	        float Is = ks*ds;
+            return C*(Ia+Id+Is);
+	    }
+	
+	    void main()
+	    {
+	        point_position = modelViewMatrix * vec4(position, 1.0);
+	        normal_vector = normalMatrix * normal;
+	        vec3 C = m_color;
+	        vec3 L = normalize( light_position - point_position.xyz);
+	        vec3 N = normalize( normal_vector);
+	        vec3 V = normalize(camera_position-point_position.xyz);
+	        point_color = PhongReflection(C,L,N,V);
+	        gl_Position = projectionMatrix * point_position;
+	    }
+    </script>
+
+    <script type="x-shader/x-fragment" id="gouraud.frag">
+	    varying vec3 point_color;
+	    void main(){
+	    gl_FragColor = vec4(point_color,1.0);
+	}
+    </script>
+      
+    <script type="x-shader/x-vertex" id="phong.vert">
+	    varying vec3 point_color;
+	    varying vec4 point_position;
+        varying vec3 normal_vector;
+        uniform vec3 m_color;
+		 
+	    void main()
+	    {
+	        point_color = m_color;
+	        point_position = modelViewMatrix * vec4(position, 1.0);
+	        normal_vector = normalMatrix * normal;	 
+            gl_Position = projectionMatrix * point_position;
+	    }
+    </script>
+      
+    <script type="x-shader/x-fragment" id="phong.frag">
+
+	    varying vec3 point_color;
+	    varying vec4 point_position;
+	    varying vec3 normal_vector;
+	    uniform vec3 light_position;
+	    uniform vec3 camera_position;
+
+	    vec3 BlinnPhongReflection(vec3 C,vec3 L,vec3 N, vec3 V)
+	    {
+	        float ka = 0.3;
+	        float kd = 0.5;
+	        float ks = 0.8;
+	        float n = 50.0;
+	        vec3 H = normalize(L+V);
+	        float dd = max( dot(N, L), 0.0);
+	        float ds = pow( max( dot(N,H),0.0), n);
+	        if (dd <= 0.0){	 ds = 0.0;}
+	        float Ia = ka;
+	        float Id = kd*dd;
+	        float Is = ks*ds;	  
+	        return C*(Ia+Id+Is);
+	    }
+
+	    void main(){
+	        vec3 C = point_color;
+	        vec3 L = normalize( light_position - point_position.xyz);
+	        vec3 N = normalize( normal_vector);
+	        vec3 V = normalize( camera_position - point_position.xyz );
+	        vec3 shaded_color = BlinnPhongReflection(C,L,N,V);
+	        gl_FragColor = vec4(shaded_color,1.0);
+	    }
+    </script>
+	<script>
+	    main();
+	</script>
+    </body>
+</html>
+

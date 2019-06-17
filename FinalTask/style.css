@@ -1,0 +1,80 @@
+@charset "utf-8";
+/*========================================================
+                    Main layout styles
+=========================================================*/
+body {
+	font: 14px ;
+	line-height: 1.428571429;
+	width: 100%;
+	margin: 0 auto;
+}
+
+#entirety {
+  width: 100%;
+  height: auto;
+	margin: 0 auto;
+}
+/*========================================================
+                    visualization
+=========================================================*/
+#display {
+  width: 50%;
+  float: right;
+	margin: 0 auto;
+}
+
+#text {
+  width: 29%;
+  float: left;
+  margin: 0 auto;
+  padding: 0.5%;
+}
+
+/*========================================================
+                    Functions
+=========================================================*/
+#controller {
+  width:20%;
+  height: auto;
+  float:right;
+	margin: 0 auto;
+  text-align:center;
+}
+#div_isovalue {
+  width: 100%;
+  height: 60px;
+	margin: 0 auto;
+  padding-top: 10px;
+  border: 1px solid #000;
+  background: #e3ec8c;
+}
+#div_changeColor {
+  width: 100%;
+  height: 90px;
+	margin: 0 auto;
+  border: 1px solid #000;
+  text-align: center;
+  background: #a5e2f5;
+}
+#div_shader {
+  width: 100%;
+  height: 60px;
+	margin: 0 auto;
+  border: 1px solid #000;
+  background: #d99bf1;
+  padding-top: 10px;
+
+}
+#div_ResetBtn {
+  width: 100%;
+  height: 60px;
+	margin: 0 auto;
+  border: 1px solid #000;
+  background: #eeb899;
+  padding-top: 20px;
+}
+#Reset_Btn {
+  width: 80px;
+  font-size: 16px;
+  padding: 15px 10px 15px 10px;
+}
